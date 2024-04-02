@@ -6,7 +6,7 @@
 
 typedef struct	s_game
 {
-	char	buffer[120];
+	char	buffer[450];
 	int		height; //y rows
 	int		width; //x columns
 	int		enemy; //will I?
@@ -21,5 +21,6 @@ void	error_handling(char *str);
 void	check_map_empty_rect(int fd, int *esc, int *coin, int *pawn);
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 void	map_height_width(char **argv, t_game *node);
+void	check_edges(t_game *node, char **argv);
 
 #endif

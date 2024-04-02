@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:49:46 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/02 19:00:23 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/02 22:56:49 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,34 +126,95 @@ void	map_height_width(char **argv, t_game *node)
 	if (x < 2 || y < 2 || x > 20 || y > 20)
 	{
 		free(node);
-		error_handling("Height and width should not exeed 20");
+		error_handling("Height and width should not exeed 20 neither be < 2");
 	}
 	else
 	{
-		node->width = x;
+		node->width = x + 1;
+// ft_printf("node->width = %i\n", node->width);
 		node->height = y;
+// ft_printf("node->height = %i\n", node->height);
+// exit(0);
 	}
-	check_edges(node, fd);
-	// close(fd);
+	close(fd);
+	check_edges(node, argv);
 }
 
-void check_edges(t_game *node, int fd)
+void	check_edges(t_game *node, char **argv)
 {
-	int	i;
-	int	j;
+	char	array[node->width][node->height];
+	int		rows;
+	int		columns;
+	int		bytes_read;
+	int		i = 0;
+	int		j = 0;
+	int		k = 0;
+	int		fd;
 
-	i = 0;
-	j = 0;
+	fd = open(argv[1], O_RDONLY);
 	
-	// while (i != node->height)
-	// {
-	// 	while (j != node->width)
-	// 	{
-
-	// 		j++;
-	// 	}
-	// 	j = 0;
-	// 	i++;
-	// }
-	while (node->width)
+	rows = 0;
+	bytes_read = 1;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, node->buffer, 500);
+		if (bytes_read == -1)
+			error_handling("couldnt read from file");
+	}
+// ft_printf("bytes_read = %i\n", bytes_read);
+	while (i < node->height)
+	{
+		j = 0;
+		while(j < node->width - 1)
+		{
+			array[i][j] = node->buffer[k];
+if (i == 0)
+{
+	ft_printf("array[i][j] = %c\t", array[i][j]);
+	ft_printf("j = %i\n", j);
+}
+// ft_printf("node->buffer[k] = %c | array[i][j] = %c | k = %i\n", node->buffer[k], array[i][j], k); //seems to copy properly
+// ft_printf("i =  %i\t", i);
+// ft_printf("j =  %i\n", j);
+			j++;
+			k++;
+		}
+		i++;
+// if (i == 10)
+	// exit(0);
+	}
+ft_printf("____________________________________________________\n");
+// exit(0);
+rows = 0;
+columns = 0;
+	while (rows < node->height - 1)
+	{
+ft_printf("____________________________________________________\n");
+		columns = 0;
+		while (rows == 0 && columns < node->width - 1) // && array[rows][columns] != '\n'
+		{
+ft_printf("array[rows][columns] = %c | rows = %i | columns = %i\n", array[rows][columns], rows, columns);
+ft_printf("BONJOUR\n");
+			if (array[rows][columns] != '1' && array[rows][columns] != '\n')
+				error_handling("Your map should be surrouded by walls");
+			columns++;
+		}
+		if (rows > 0 && rows < node->height - 1) // && columns < node->width
+		{
+ft_printf("HEY\n");
+ft_printf("array[rows][columns] = %c | rows = %i | columns = %i\n", array[rows][columns], rows, columns);
+ft_printf("HEY\n");
+			if (array[rows][0] != '1' || array[rows][node->width - 2] != '1')
+				error_handling("Your map should be surrouded by walls");
+		}
+		while (rows == node->height - 1 && columns < node->width - 1)
+		{
+ft_printf("HALLO\n");
+			if (array[rows][columns] != '1')
+				error_handling("Your map should be surrouded by walls");
+			columns++;
+		}
+		rows++;
+	}
+ft_printf("_________________fin check edges_____________________________\n");
 }
