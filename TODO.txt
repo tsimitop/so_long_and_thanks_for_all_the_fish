@@ -1,5 +1,3 @@
-delete example.c from library build
-
 0 for an empty space
 1 for a wall
 C for a collectible
@@ -15,13 +13,13 @@ parsing
 
 	OK map is rectangular
 
-	OK 2 arguments mono
+	OK only 2 arguments
 
-	OK invalid arxeio, existing kai mono .ber file extension (teleftaioi 4 charactres .ber kai oxi .berrr)
+	OK check for invalid file, existing, .ber file extension (last 4 characters .ber not .berr)
 
-	OK check gia empty file .ber
+	OK check for empty file .ber
 
-	OK na mhn exo 3enous characthres
+	OK check for invalid characters
 
 	map is closed/surrounded by walls. If it’s not, the program must return an error
 
@@ -36,4 +34,4 @@ parsing
 	exit in a clean way, and return "Error\n" followed by an explicit error message of
 	your choice.
 
-	na tsekaro megethos
+	check for map dimensions?
