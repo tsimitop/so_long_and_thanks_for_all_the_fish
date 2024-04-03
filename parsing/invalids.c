@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:49:46 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/03 17:45:18 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:37:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	check_map_empty_rect(int fd, int *esc, int *coin, int *pawn)
 	gnl = get_next_line(fd);
 	if (!gnl)
 		error_handling("Map appears to be empty");
+	ft_strlcpy(node->buffer, gnl, 450);
 	gnl_len = ft_strlen(gnl);
 	while (gnl != NULL)
 	{
@@ -75,10 +76,13 @@ void	check_map_empty_rect(int fd, int *esc, int *coin, int *pawn)
 			error_handling("Map should be rectangular");
 		}
 		gnl = get_next_line(fd);
+		ft_strlcat(node->buffer, gnl, 450);
 	}
 	//map wall accesibility?
 	close(fd);
 }
+
+array = ft_split(node->buffer, '\n');
 
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 {
@@ -114,7 +118,7 @@ void	map_height_width(char **argv, t_game *node)
 	int		fd;
 	char	*gnl;
 
-ft_printf("ft_strlen(1111111111111111111) = %i\n", ft_strlen("1111111111111111111"));
+// ft_printf("ft_strlen(1111111111111111111) = %i\n", ft_strlen("1111111111111111111"));
 	fd = open(argv[1], O_RDONLY);
 	gnl = get_next_line(fd);
 	x = ft_strlen(gnl);
