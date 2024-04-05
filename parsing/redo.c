@@ -6,11 +6,11 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/05 13:36:28 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/05 20:02:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "/Users/tsimitop/Documents/Testing/so_long_and_thanks_for_all_the_fish/so_long.h"
+#include "so_long.h"
 
 int	main(int argc, char **argv)
 {
@@ -65,15 +65,38 @@ void	assign_values(t_game *info, int *esc, int *coin, int *pawn)
 
 void	check_walls_paths(char **spl_buf, t_game *info)
 {
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (spl_buf[i])
+	{
+		while (spl_buf[i][j])
+		{
+			if (spl_buf[i][j] == 'P')
+			{
+// ft_printf("spl_buf[i][j] = %c\n", spl_buf[i][j]);
+// ft_printf("spl_buf[%d][%d] = %c\n", i, j, spl_buf[i][j]);
+				info->pawn_position.x = j;
+				info->pawn_position.y = i;
+			}
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+	info->dimentions.x = info->width;
+	info->dimentions.y = info->height;
 	check_walls(spl_buf, info);
-	// check_paths(spl_buf);
+	check_paths(spl_buf, info);
 }
 
 void	check_walls(char **spl_buf, t_game *info)
 {
 	int	i;
 	int	j;
-(void)info;
+
 	i = 0;
 	j = 0;
 	while (spl_buf[i] != NULL && spl_buf[i][j] != '\0')
@@ -89,10 +112,6 @@ void	check_walls(char **spl_buf, t_game *info)
 	}
 }
 
-// void	check_paths(char **spl_buf)
-// {
-
-// }
 
 void	check_map_file_cont(char **argv, t_game *info)
 {

@@ -3,9 +3,9 @@
 ################################################################################
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-LIBS = libft.h pipex.h
+LIBS = libft.h
 LIBFT_PATH = ./Libft
-LIBFT := $(LIBFT_PATH)/libft.a
+LIBFT = $(LIBFT_PATH)/libft.a
 LDFLAGS = -L $(LIBFT_PATH) -lft
 PARSING_PATH = ./parsing
 
@@ -15,7 +15,8 @@ NAME = so_long
 #									MAIN PART								   #
 ################################################################################
 
-SRC =	$(PARSING_PATH)/redo.c
+SRC =	$(PARSING_PATH)/redo.c \
+		$(PARSING_PATH)/flood.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -25,7 +26,7 @@ $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 $(OBJ) : %.o : %.c
-	@$(CC) -c $(CFLAGS) -I$(LIBFT_PATH) $< -o $@
+	@$(CC) -c $(CFLAGS) -I $(LIBFT_PATH) -I include/ $< -o $@
 
 clean :
 	@echo "Removing $(OBJ)"
