@@ -6,11 +6,13 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:06:29 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/05 20:03:55 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/05 20:10:39 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void static	free_buf_error(char **spl_buf, char c);
 
 void	check_paths(char **spl_buf, t_game *info)
 {
@@ -29,13 +31,7 @@ void	check_paths(char **spl_buf, t_game *info)
 		while (spl_buf[i][j])
 		{
 			if (spl_buf[i][j] != '1')
-			{
-				// if (spl_buf[i][j] == 'E')
-				// 	e_counter++;
-				// else if (spl_buf[i][j] == 'C')
-				// 	c_counter++;
 				free_buf_error(spl_buf, spl_buf[i][j]);
-			}
 			j++;
 		}
 		i++;
@@ -43,7 +39,7 @@ void	check_paths(char **spl_buf, t_game *info)
 	}
 }
 
-void	free_buf_error(char **spl_buf, char c)
+void static	free_buf_error(char **spl_buf, char c)
 {
 	if (c == 'E')
 	{

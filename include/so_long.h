@@ -30,7 +30,7 @@ void	check_walls_paths(char **spl_buf, t_game *info);
 void	check_paths(char **spl_buf, t_game *info);
 void	call_fill(char **tab, t_point size, t_point begin);
 void	fill(char **spl_buf, t_point size, t_point cur);
-void	free_buf_error(char **spl_buf, char c);
+// void	free_buf_error(char **spl_buf, char c);
 // void	increase_counter(char c, int &e_counter, &int c_counter);
 
 
