@@ -15,7 +15,7 @@ NAME = so_long
 #									MAIN PART								   #
 ################################################################################
 
-SRC =	$(PARSING_PATH)/invalids.c
+SRC =	$(PARSING_PATH)/redo.c
 
 OBJ = $(SRC:.c=.o)
 
