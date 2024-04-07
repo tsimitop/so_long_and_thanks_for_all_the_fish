@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:06:29 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/05 20:10:39 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/07 11:17:23 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,9 @@ void	check_paths(char **spl_buf, t_game *info)
 {
 	int		i;
 	int		j;
-	int		e_counter;
-	int		c_counter;
 
 	i = 0;
 	j = 0;
-	e_counter = 0; //remove
-	c_counter = 0;
 	fill(spl_buf, info->dimentions, info->pawn_position);
 	while (spl_buf[i])
 	{
@@ -53,15 +49,15 @@ void static	free_buf_error(char **spl_buf, char c)
 	}
 }
 
-void	fill(char **spl_buf, t_point size, t_point cur)
+void	fill(char **spl_buf, t_point size, t_point spot)
 {
-	if (cur.y < 0 || cur.y >= size.y || cur.x < 0 || cur.x >= size.x
-		|| spl_buf[cur.y][cur.x] == '1')
+	if (spot.y < 0 || spot.y >= size.y || spot.x < 0 || spot.x >= size.x
+		|| spl_buf[spot.y][spot.x] == '1')
 		return ;
 
-	spl_buf[cur.y][cur.x] = '1';
-	fill(spl_buf, size, (t_point){cur.x - 1, cur.y});
-	fill(spl_buf, size, (t_point){cur.x + 1, cur.y});
-	fill(spl_buf, size, (t_point){cur.x, cur.y - 1});
-	fill(spl_buf, size, (t_point){cur.x, cur.y + 1});
+	spl_buf[spot.y][spot.x] = '1';
+	fill(spl_buf, size, (t_point){spot.x - 1, spot.y});
+	fill(spl_buf, size, (t_point){spot.x + 1, spot.y});
+	fill(spl_buf, size, (t_point){spot.x, spot.y - 1});
+	fill(spl_buf, size, (t_point){spot.x, spot.y + 1});
 }

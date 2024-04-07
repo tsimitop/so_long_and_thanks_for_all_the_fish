@@ -2,6 +2,8 @@
 # define SO_LONG_H
 
 # include <fcntl.h>
+# include "../MLX42/include/MLX42/MLX42_Int.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 # include "/Users/tsimitop/Documents/Testing/so_long_and_thanks_for_all_the_fish/Libft/libft.h"
 
 typedef struct 	s_point
@@ -29,7 +31,7 @@ void	run_all_checks(char **argv,t_game *info);
 void	check_walls_paths(char **spl_buf, t_game *info);
 void	check_paths(char **spl_buf, t_game *info);
 void	call_fill(char **tab, t_point size, t_point begin);
-void	fill(char **spl_buf, t_point size, t_point cur);
+void	fill(char **spl_buf, t_point size, t_point spot);
 // void	free_buf_error(char **spl_buf, char c);
 // void	increase_counter(char c, int &e_counter, &int c_counter);
 

@@ -3,11 +3,14 @@
 ################################################################################
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-LIBS = libft.h
+# LIBS = libft.h
 LIBFT_PATH = ./Libft
 LIBFT = $(LIBFT_PATH)/libft.a
 LDFLAGS = -L $(LIBFT_PATH) -lft
 PARSING_PATH = ./parsing
+LIBMLX = ./MLX42
+HEADERS = -I $(LIBMLX)/include
+LIBS = $(LIBMLX)/build/libmlx42.a -lglfw
 
 NAME = so_long
 
@@ -15,23 +18,29 @@ NAME = so_long
 #									MAIN PART								   #
 ################################################################################
 
-SRC =	$(PARSING_PATH)/redo.c \
-		$(PARSING_PATH)/flood.c
+SRCS =	$(PARSING_PATH)/valid_parse.c \
+		$(PARSING_PATH)/flood.c \
+		main.c
 
-OBJ = $(SRC:.c=.o)
+OBJS = $(SRCS:.c=.o)
 
-all : $(LIBFT) $(NAME)
+all : $(LIBFT) libmlx $(NAME)
 
-$(NAME) : $(OBJ)
+libmlx :
+	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build
+
+$(NAME) : $(OBJS)
 	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
-$(OBJ) : %.o : %.c
-	@$(CC) -c $(CFLAGS) -I $(LIBFT_PATH) -I include/ $< -o $@
+$(OBJS) : %.o : %.c
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) -I$(LIBFT_PATH) -I include/ && printf "Compiling: $(notdir $<)"
+# @$(CC) -c $(CFLAGS) -I $(LIBFT_PATH) -I include/ $< -o $@
 
 clean :
-	@echo "Removing $(OBJ)"
-	@rm -f $(OBJ)
+	@echo "Removing $(OBJS)"
+	@rm -f $(OBJS)
 	@make -C $(LIBFT_PATH) clean
+	@rm -rf $(LIBMLX)/build
 
 fclean : clean
 	@echo "Removing $(NAME)"
@@ -49,4 +58,4 @@ $(LIBFT):
 	@make -C $(LIBFT_PATH) --no-print-directory
 
 .PHONY :
-	all clean fclean re
+	all clean fclean re libmlx
