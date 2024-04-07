@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redo.c                                             :+:      :+:    :+:   */
+/*   valid_parse.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/07 12:30:56 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:42:20 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-// int	main(int argc, char **argv)
-// {
-// 	t_game	*info;
-
-// 	info = ft_calloc(1, sizeof(t_game));
-// 	if (argc == 2)
-// 	{
-// 		run_all_checks(argv, info);
-// 		// map_height_width(argv, node);
-// 	}
-// 	else
-// 		ft_printf("Arguments should be: ./so_long map.ber\n"); //If any misconfiguration of any kind is encountered in the file, the program must exit in a clean way, and return "Error\n" followed by 
-// 	ft_printf("You reached the end of the main function...");
-// 	return (0);
-// }
 
 void	run_all_checks(char **argv, t_game *info)
 {
@@ -46,11 +30,11 @@ void	run_all_checks(char **argv, t_game *info)
 	{
 		free_split(spl_buf);
 		if (coin < 1)
-			error_handling("You need at least one collectable in your map", NULL);
+			error_handling("You need at least one collectable in your map", NULL, info);
 		if (esc != 1)
-			error_handling("You need one exit per map, no more, no less", NULL);
+			error_handling("You need one exit per map, no more, no less", NULL, info);
 		if (pawn != 1)
-			error_handling("One player is required to play, no more, no less", NULL);
+			error_handling("One player is required to play, no more, no less", NULL, info);
 	}
 	assign_values(info, &esc, &coin, &pawn);
 	check_walls_paths(spl_buf, info);
@@ -104,7 +88,7 @@ void	check_walls(char **spl_buf, t_game *info)
 		while (spl_buf[i][j] != '\0')
 		{
 			if (spl_buf[0][j] != '1' || spl_buf[i][0] != '1' || spl_buf[i][info->width - 1] != '1' || spl_buf[info->height - 1][j] != '1')
-				error_handling("Your map should be surrouded by walls", NULL);
+				error_handling("Your map should be surrouded by walls", NULL, info);
 			j++;
 		}
 		j = 0;
@@ -118,10 +102,10 @@ void	check_map_file_cont(char **argv, t_game *info)
 	int	fd;
 
 	if (ft_strncmp(".ber", argv[1] + (ft_strlen(argv[1]) - 4), 5) != 0)
-		error_handling("Wrong file type. Map should be of type .ber", NULL);
+		error_handling("Wrong file type. Map should be of type .ber", NULL, info);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		error_handling("Unable to open file or file does not exist", NULL);
+		error_handling("Unable to open file or file does not exist", NULL, info);
 	fill_buffer_check_rect_empty(fd, info);
 }
 
@@ -135,7 +119,7 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	count_height = 0;
 	gnl = get_next_line(fd);
 	if (!gnl)
-		error_handling("Map appears to be empty", NULL);
+		error_handling("Map appears to be empty", NULL, info);
 	ft_strlcpy(info->buffer, gnl, 450);
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
@@ -144,7 +128,7 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 		count_height++;
 		new_line = check_rect(gnl);
 		if (gnl_len != (ft_strlen(gnl) + new_line))
-			error_handling("Map should be rectangular", &fd);// add fd and condition if NULL inside function
+			error_handling("Map should be rectangular", &fd, info);// add fd and condition if NULL inside function
 		gnl = get_next_line(fd);
 		if (gnl)
 			ft_strlcat(info->buffer, gnl, 450);
@@ -173,7 +157,8 @@ char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn)
 	i = 0;
 	spl_buf = ft_split(info->buffer, '\n');
 	if (!spl_buf)
-		error_handling("Split failed", NULL);
+		error_handling("Split failed", NULL, info);
+	// info->split_map = spl_buf;
 	while (spl_buf[i])
 	{
 		check_exit_coin_pawn(spl_buf[i], esc, coin, pawn);
@@ -191,7 +176,7 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	{
 		if (str[i] != '0' && str[i] != '1' && str[i] != 'C' && str[i] != 'P' \
 			&& str[i] != 'E' && str[i] != '\n')
-			error_handling("Invalid character in map.", NULL);
+			error_handling("Invalid character in map.", NULL, NULL); //fix ret to free node
 		if (str[i] == 'C')
 			(*coin)++;
 		else if (str[i] == 'E')
@@ -202,11 +187,13 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	}
 }
 
-void	error_handling(char *str, int *fd)
+void	error_handling(char *str, int *fd, t_game *info)
 {
+	if (info)
+		free(info);
 	if (fd)
 		close(*fd);
 	ft_printf("\033[0;31mError\033[0m\n");
 	ft_printf("%s\n", str);
-	exit(0);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:06:29 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/07 11:17:23 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:19:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ void static	free_buf_error(char **spl_buf, char c)
 	if (c == 'E')
 	{
 		free_split(spl_buf);
-		error_handling("No path to exit", NULL);
+		error_handling("No path to exit", NULL, NULL);
 	}
 	if (c == 'C')
 	{
 		free_split(spl_buf);
-		error_handling("No path to all collectibles", NULL);
+		error_handling("No path to all collectibles", NULL, NULL);
 	}
 }
 

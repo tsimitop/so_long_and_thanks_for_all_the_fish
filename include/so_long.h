@@ -1,6 +1,9 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+# define WIDTH 1000
+# define HEIGHT 1000
+
 # include <fcntl.h>
 # include "../MLX42/include/MLX42/MLX42_Int.h"
 # include "../MLX42/include/MLX42/MLX42.h"
@@ -12,42 +15,41 @@ typedef struct 	s_point
 	int			y;
 }				t_point;
 
-// t_point begin = {7, 4};
-
 typedef struct	s_game
 {
 	char	buffer[450];
-	int		height; //y rows
-	int		width; //x columns
-	// int		enemy; //will I?
-	int		escape; //== 1
-	int		coins; // > 1
-	int		pawn; // == 1
+	mlx_t	*mlx;
+	int		height;
+	int		width;
+	int		escape;
+	int		coins;
+	int		pawn;
 	t_point	dimentions;
 	t_point	pawn_position;
+	char	**split_map; //free
+	// char	*collectible_path_png;
+	// char	*pawn_path_png;
+	// char	*floor_path_png;
+	// char	*wall_path_png;
+	// char	*exit_path_png;
 }				t_game;
 
 void	run_all_checks(char **argv,t_game *info);
 void	check_walls_paths(char **spl_buf, t_game *info);
 void	check_paths(char **spl_buf, t_game *info);
-void	call_fill(char **tab, t_point size, t_point begin);
 void	fill(char **spl_buf, t_point size, t_point spot);
-// void	free_buf_error(char **spl_buf, char c);
-// void	increase_counter(char c, int &e_counter, &int c_counter);
-
 
 void	check_walls(char **spl_buf, t_game *info);
 char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn);
 void	check_map_file_cont(char **argv, t_game *info);
 void	fill_buffer_check_rect_empty(int fd, t_game *info);
-void	error_handling(char *str, int *fd);
+void	error_handling(char *str, int *fd, t_game *info);
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 int		check_rect(char *gnl);
 void	assign_values(t_game *info, int *esc, int *coin, int *pawn);
 
-// void	check_map_file_chars_shape(char **argv);
-// void	check_map_empty_rect(int fd, int *esc, int *coin, int *pawn);
-// void	map_height_width(char **argv, t_game *node);
-// void	check_edges(t_game *node, char **argv);
+void	map_init(t_game *info);
+void	put_image(t_game *info, char c, int i, int j);
+void	put_element(t_game *info, int i, int j, char *str);
 
 #endif

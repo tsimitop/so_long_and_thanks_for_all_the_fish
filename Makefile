@@ -3,14 +3,14 @@
 ################################################################################
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-# LIBS = libft.h
 LIBFT_PATH = ./Libft
 LIBFT = $(LIBFT_PATH)/libft.a
-LDFLAGS = -L $(LIBFT_PATH) -lft
+# LDFLAGS = -L $(LIBFT_PATH) -lft
+LDFLAGS = -L $(LIBFT_PATH) -L $(LIBMLX_PATH)/build -lft -lmlx42 -lglfw -ldl -lm -pthread
 PARSING_PATH = ./parsing
-LIBMLX = ./MLX42
-HEADERS = -I $(LIBMLX)/include
-LIBS = $(LIBMLX)/build/libmlx42.a -lglfw
+LIBMLX_PATH = ./MLX42
+HEADERS = -I $(LIBMLX_PATH)/include
+LIBS = $(LIBMLX_PATH)/build/libmlx42.a -lglfw
 
 NAME = so_long
 
@@ -20,27 +20,29 @@ NAME = so_long
 
 SRCS =	$(PARSING_PATH)/valid_parse.c \
 		$(PARSING_PATH)/flood.c \
-		main.c
+		main.c \
+		initialization.c
 
 OBJS = $(SRCS:.c=.o)
 
-all : $(LIBFT) libmlx $(NAME)
+all : $(LIBFT) $(LIBS) $(NAME)
 
-libmlx :
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build
+$(LIBS) :
+	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) $(LIBS)
 	@$(CC) $(CFLAGS) $^ $(LDFLAGS) -o $@
 
 $(OBJS) : %.o : %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) -I$(LIBFT_PATH) -I include/ && printf "Compiling: $(notdir $<)"
+	@$(CC) -c $(CFLAGS) -I$(LIBFT_PATH) -I include/ $(HEADERS) $< -o $@ && printf "Compiling: $(notdir $<\n)"
+# @$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) -I$(LIBFT_PATH) -I include/ && printf "Compiling: $(notdir $<)"
 # @$(CC) -c $(CFLAGS) -I $(LIBFT_PATH) -I include/ $< -o $@
 
 clean :
 	@echo "Removing $(OBJS)"
 	@rm -f $(OBJS)
 	@make -C $(LIBFT_PATH) clean
-	@rm -rf $(LIBMLX)/build
+	@rm -rf $(LIBMLX_PATH)/build
 
 fclean : clean
 	@echo "Removing $(NAME)"
