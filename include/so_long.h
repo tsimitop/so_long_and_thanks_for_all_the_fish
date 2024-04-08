@@ -27,6 +27,8 @@ typedef struct	s_game
 	t_point	dimentions;
 	t_point	pawn_position;
 	char	**split_map; //free
+	char	*argv_map;
+	char	**allocated_map; //remove, works with split map
 	// char	*collectible_path_png;
 	// char	*pawn_path_png;
 	// char	*floor_path_png;

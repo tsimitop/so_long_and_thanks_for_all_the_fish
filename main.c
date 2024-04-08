@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/07 18:35:10 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:17:30 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_handling("Arguments should be: ./so_long map.ber\n", NULL, NULL);
 	info = ft_calloc(1, sizeof(t_game));
+	info->argv_map = argv[1];
 	run_all_checks(argv, info);
 	info->mlx = mlx_init(WIDTH, HEIGHT, "So long and thanks", true);
 	if (!info->mlx)
 		error_handling("Failed to allocate mlx", NULL, info);
 	map_init(info);
-	// mlx_key_hook(bomberman->mlx, ft_hook, bomberman);
+	// mlx_key_hook(info->mlx, ft_hook, info);
 	//OR || AND
 	// mlx_loop_hook(info->mlx, ft_hook, info->mlx);
 	mlx_loop(info->mlx);

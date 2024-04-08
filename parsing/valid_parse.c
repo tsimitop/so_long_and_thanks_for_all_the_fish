@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/07 18:42:20 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:01:45 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn)
 	spl_buf = ft_split(info->buffer, '\n');
 	if (!spl_buf)
 		error_handling("Split failed", NULL, info);
-	// info->split_map = spl_buf;
+	info->split_map = ft_split(info->buffer, '\n'); //this vesion or the init map1??
 	while (spl_buf[i])
 	{
 		check_exit_coin_pawn(spl_buf[i], esc, coin, pawn);
