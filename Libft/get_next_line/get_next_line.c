@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:12:05 by tsimitop          #+#    #+#             */
-/*   Updated: 2023/12/14 14:04:34 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:33:15 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,7 @@ char	*get_next_line(int fd)
 {
 	static char	*line_const = NULL;
 	char		*current_line;
-	int			i;
 
-	i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (free(line_const), line_const = NULL, NULL);
 	if (line_const == NULL)

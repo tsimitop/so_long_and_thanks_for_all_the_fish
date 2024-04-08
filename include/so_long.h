@@ -7,7 +7,7 @@
 # include <fcntl.h>
 # include "../MLX42/include/MLX42/MLX42_Int.h"
 # include "../MLX42/include/MLX42/MLX42.h"
-# include "/Users/tsimitop/Documents/Testing/so_long_and_thanks_for_all_the_fish/Libft/libft.h"
+# include "../Libft/libft.h"
 
 typedef struct 	s_point
 {
@@ -28,7 +28,7 @@ typedef struct	s_game
 	t_point	pawn_position;
 	char	**split_map; //free
 	char	*argv_map;
-	char	**allocated_map; //remove, works with split map
+	// char	**allocated_map; //remove, works with split map
 	// char	*collectible_path_png;
 	// char	*pawn_path_png;
 	// char	*floor_path_png;
