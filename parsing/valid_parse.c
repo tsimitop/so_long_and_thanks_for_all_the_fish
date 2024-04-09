@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/08 16:01:45 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/09 20:03:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,14 @@ void	run_all_checks(char **argv, t_game *info)
 		if (pawn != 1)
 			error_handling("One player is required to play, no more, no less", NULL, info);
 	}
-	assign_values(info, &esc, &coin, &pawn);
+	assign_values(info, &esc, &coin);
 	check_walls_paths(spl_buf, info);
 }
 
-void	assign_values(t_game *info, int *esc, int *coin, int *pawn)
+void	assign_values(t_game *info, int *esc, int *coin)
 {
 	info->escape = *esc;
 	info->coins = *coin;
-	info->pawn = *pawn;
 }
 
 void	check_walls_paths(char **spl_buf, t_game *info)
@@ -53,22 +52,21 @@ void	check_walls_paths(char **spl_buf, t_game *info)
 	int		j;
 
 	i = 0;
-	j = 0;
 	while (spl_buf[i])
 	{
+		j = 0;
 		while (spl_buf[i][j])
 		{
 			if (spl_buf[i][j] == 'P')
 			{
-// ft_printf("spl_buf[i][j] = %c\n", spl_buf[i][j]);
-// ft_printf("spl_buf[%d][%d] = %c\n", i, j, spl_buf[i][j]);
+				ft_printf("j = %i\n", j);
+				ft_printf("i = %i\n", i);
 				info->pawn_position.x = j;
 				info->pawn_position.y = i;
 			}
 			j++;
 		}
 		i++;
-		j = 0;
 	}
 	info->dimentions.x = info->width;
 	info->dimentions.y = info->height;
@@ -158,7 +156,7 @@ char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn)
 	spl_buf = ft_split(info->buffer, '\n');
 	if (!spl_buf)
 		error_handling("Split failed", NULL, info);
-	info->split_map = ft_split(info->buffer, '\n'); //this vesion or the init map1??
+	info->split_map = ft_split(info->buffer, '\n');
 	while (spl_buf[i])
 	{
 		check_exit_coin_pawn(spl_buf[i], esc, coin, pawn);

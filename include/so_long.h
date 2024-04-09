@@ -1,8 +1,13 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# define WIDTH 1000
-# define HEIGHT 1000
+# define WIDTH 2000
+# define HEIGHT 2000
+# define TILE_SIZE 32
+// # define UP info->split_map[info->pawn_position.x - 1][info->pawn_position.y]
+// # define DOWN info->split_map[info->pawn_position.x + 1][info->pawn_position.y]
+// # define LEFT info->split_map[info->pawn_position.x][info->pawn_position.y - 1]
+// # define RIGHT info->split_map[info->pawn_position.x][info->pawn_position.y + 1]
 
 # include <fcntl.h>
 # include "../MLX42/include/MLX42/MLX42_Int.h"
@@ -23,11 +28,18 @@ typedef struct	s_game
 	int		width;
 	int		escape;
 	int		coins;
-	int		pawn;
+	// int		pawn;
 	t_point	dimentions;
 	t_point	pawn_position;
 	char	**split_map; //free
 	char	*argv_map;
+	int		moves;
+	mlx_image_t	*image_pawn;
+	mlx_image_t	*image_floor;
+	mlx_image_t	*image_wall;
+	mlx_image_t	*image_exit;
+	mlx_image_t	*image_coin;
+
 	// char	**allocated_map; //remove, works with split map
 	// char	*collectible_path_png;
 	// char	*pawn_path_png;
@@ -48,10 +60,18 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info);
 void	error_handling(char *str, int *fd, t_game *info);
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 int		check_rect(char *gnl);
-void	assign_values(t_game *info, int *esc, int *coin, int *pawn);
+void	assign_values(t_game *info, int *esc, int *coin);
 
 void	map_init(t_game *info);
 void	put_image(t_game *info, char c, int i, int j);
-void	put_element(t_game *info, int i, int j, char *str);
+mlx_image_t	*put_element(t_game *info, int i, int j, char *str);
+void	go_up(t_game *info);
+void	go_left(t_game *info);
+void	go_down(t_game *info);
+void	go_right(t_game *info);
+void	ft_hook(mlx_key_data_t	cur_key, void *game);
+void	map_render(t_game *info);
+void	loading_images(t_game *info);
+
 
 #endif

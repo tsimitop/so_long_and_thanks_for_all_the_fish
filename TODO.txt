@@ -1,3 +1,8 @@
+make sure that clicking the red cross button to  exit the window exits in a clean way
+At every move, the current number of movements must be displayed in the shell.
+
+
+
 0 for an empty space
 1 for a wall
 C for a collectible

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:49:46 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/05 11:40:00 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/09 19:47:09 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	check_map_empty_rect(int fd, int *esc, int *coin, int *pawn)
 	close(fd);
 }
 
-array = ft_split(node->buffer, '\n');
+// array = ft_split(node->buffer, '\n');
 
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 {
