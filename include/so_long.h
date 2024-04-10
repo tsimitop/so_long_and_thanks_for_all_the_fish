@@ -1,9 +1,9 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# define WIDTH 2000
-# define HEIGHT 2000
-# define TILE_SIZE 32
+// # define WIDTH 1000
+// # define HEIGHT 1000
+# define TILE_SIZE 64 // biggest will be 64
 // # define UP info->split_map[info->pawn_position.x - 1][info->pawn_position.y]
 // # define DOWN info->split_map[info->pawn_position.x + 1][info->pawn_position.y]
 // # define LEFT info->split_map[info->pawn_position.x][info->pawn_position.y - 1]
@@ -22,13 +22,14 @@ typedef struct 	s_point
 
 typedef struct	s_game
 {
-	char	buffer[1000];
+	char	buffer[4000];
+	// char	*buffer;
 	mlx_t	*mlx;
-	int		height;
-	int		width;
+	int		height; //max height for 64 = 20
+	int		width; //max width for 64 = 40
 	int		escape;
 	int		coins;
-	// int		pawn;
+	int		init_coins;
 	t_point	dimentions;
 	t_point	pawn_position;
 	char	**split_map; //free
@@ -39,12 +40,6 @@ typedef struct	s_game
 	mlx_image_t	*image_wall;
 	mlx_image_t	*image_exit;
 	mlx_image_t	*image_coin;
-	// char	**allocated_map; //remove, works with split map
-	// char	*collectible_path_png;
-	// char	*pawn_path_png;
-	// char	*floor_path_png;
-	// char	*wall_path_png;
-	// char	*exit_path_png;
 }				t_game;
 
 void	run_all_checks(char **argv,t_game *info);
@@ -61,9 +56,9 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 int		check_rect(char *gnl);
 void	assign_values(t_game *info, int *esc, int *coin);
 
-void	map_init(t_game *info);
-void	put_image(t_game *info, char c, int i, int j);
-mlx_image_t	*put_element(t_game *info, int i, int j, char *str);
+// void	map_init(t_game *info);
+void	put_wall_floor(t_game *info, char c, int i, int j);
+// mlx_image_t	*put_element(t_game *info, int i, int j, char *str);
 void	go_up(t_game *info);
 void	go_left(t_game *info);
 void	go_down(t_game *info);
@@ -72,6 +67,8 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game);
 void	map_render(t_game *info);
 void	loading_images(t_game *info);
 void	print_buffer(t_game *info);
-void print_spl_buf(char **spl_buf);
+void	print_spl_buf(char **spl_buf);
+void	remove_coin_instance(t_game *info);
+void	put_coin_pawn(t_game *info, char c, int i, int j);
 
 #endif

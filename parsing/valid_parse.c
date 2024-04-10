@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/10 16:12:40 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:40:42 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ void	run_all_checks(char **argv, t_game *info)
 	spl_buf = split_buffer(info, &esc, &coin, &pawn);
 	if (!spl_buf)
 		return ;
-// print_spl_buf(spl_buf);
-// print_spl_buf(info->split_map);
 	if (spl_buf && (coin < 1 || esc != 1 || pawn != 1))
 	{
 		free_split(spl_buf);
@@ -46,25 +44,22 @@ void	assign_values(t_game *info, int *esc, int *coin)
 {
 	info->escape = *esc;
 	info->coins = *coin;
+	info->init_coins = *coin;
 }
 
 void	check_walls_paths(char **spl_buf, t_game *info)
 {
 	int		y;
 	int		x;
-// ft_printf("hi\n");
+
 	y = 0;
 	while (spl_buf[y])
 	{
-// ft_printf("%c", spl_buf[0][0]);
-// ft_printf("%c", spl_buf[y][x]);
 		x = 0;
 		while (spl_buf[y][x])
 		{
 			if (spl_buf[y][x] == 'P')
 			{
-				// ft_printf("x = %i\n", x);
-				// ft_printf("i = %i\n", i);
 				info->pawn_position.x = x;
 				info->pawn_position.y = y;
 			}
@@ -90,7 +85,6 @@ void	check_walls(char **spl_buf, t_game *info)
 	{
 		while (spl_buf[i][j] != '\0')
 		{
-// ft_printf("spl_buf[%d][%d] = %c", i, j, spl_buf[i][j]);
 			if (spl_buf[0][j] != '1' || spl_buf[i][0] != '1' || spl_buf[i][info->width - 1] != '1' || spl_buf[info->height - 1][j] != '1')
 				error_handling("Your map should be surrouded by walls", NULL, info);
 			j++;
@@ -124,9 +118,11 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	gnl = get_next_line(fd);
 	if (!gnl)
 		error_handling("Map appears to be empty", NULL, info);
-	ft_strlcpy(info->buffer, gnl, 450);
+	ft_strlcpy(info->buffer, gnl, 4000);
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
+	if (info->width > 40)
+		error_handling("Map should not have width larger than 40", &fd, info);
 	while (gnl != NULL)
 	{
 		count_height++;
@@ -135,9 +131,11 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 			error_handling("Map should be rectangular", &fd, info);// add fd and condition if NULL inside function
 		gnl = get_next_line(fd);
 		if (gnl)
-			ft_strlcat(info->buffer, gnl, 450);
+			ft_strlcat(info->buffer, gnl, 4000);
 	}
 	info->height = count_height;
+	if (info->height > 40)
+		error_handling("Map should not have height larger than 20", &fd, info);
 	close(fd);
 }
 
@@ -193,8 +191,9 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 
 void	error_handling(char *str, int *fd, t_game *info)
 {
-	if (info)
-		free(info);
+	// if (info)
+	// 	free(info);
+	(void)info;
 	if (fd)
 		close(*fd);
 	ft_printf("\033[0;31mError\033[0m\n");

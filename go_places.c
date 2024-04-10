@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 14:50:56 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/10 16:28:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/10 19:29:06 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ void	go_left(t_game *info)
 	info->image_pawn->instances[0].x = info->pawn_position.x * TILE_SIZE;
 	if (info->split_map[old_y][new_x] == 'C')
 	{
+		info->split_map[old_y][new_x] = '0';
 		info->coins = info->coins - 1;
 		info->moves += 1;
-		info->image_coin->instances->enabled = false;
+		remove_coin_instance(info);
 	}
 	else if (info->split_map[old_y][new_x] == 'E')
 	{
@@ -65,9 +66,10 @@ void	go_up(t_game *info)
 	info->image_pawn->instances[0].y = info->pawn_position.y * TILE_SIZE;
 	if (info->split_map[new_y][old_x] == 'C')
 	{
+		info->split_map[new_y][old_x] = '0';
 		info->coins = info->coins - 1;
 		info->moves += 1;
-		info->image_coin->instances->enabled = false;
+		remove_coin_instance(info);
 	}
 	else if (info->split_map[new_y][old_x] == 'E')
 	{
@@ -104,9 +106,10 @@ void	go_right(t_game *info)
 	info->image_pawn->instances[0].x = info->pawn_position.x * TILE_SIZE;
 	if (info->split_map[old_y][new_x] == 'C')
 	{
+		info->split_map[old_y][new_x] = '0';
 		info->coins = info->coins - 1;
 		info->moves += 1;
-		info->image_coin->instances->enabled = false;
+		remove_coin_instance(info);
 	}
 	else if (info->split_map[old_y][new_x] == 'E')
 	{
@@ -143,9 +146,10 @@ void	go_down(t_game *info)
 	info->image_pawn->instances[0].y = info->pawn_position.y * TILE_SIZE;
 	if (info->split_map[new_y][old_x] == 'C')
 	{
+		info->split_map[new_y][old_x] = '0';
 		info->coins = info->coins - 1;
 		info->moves += 1;
-		info->image_coin->instances->enabled = false;
+		remove_coin_instance(info);
 	}
 	else if (info->split_map[new_y][old_x] == 'E')
 	{
