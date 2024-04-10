@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/09 20:06:55 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/10 15:44:51 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 int	main(int argc, char **argv)
 {
-	t_game	*info;
+	t_game	info;
 
 	if (argc != 2)
 		error_handling("Arguments should be: ./so_long map.ber\n", NULL, NULL);
-	info = ft_calloc(1, sizeof(t_game));
-	info->argv_map = argv[1];
-	info->moves = 0;
-	run_all_checks(argv, info);
-	info->mlx = mlx_init(WIDTH, HEIGHT, "So long and thanks", true);
-	if (!info->mlx)
-		error_handling("Failed to allocate mlx", NULL, info);
-	loading_images(info);
-	map_render(info);
-	// mlx_loop_hook(info->mlx, ft_hook, info);
-	mlx_key_hook(info->mlx, ft_hook, info);
+	// info = ft_calloc(1, sizeof(t_game));
+	info.argv_map = argv[1];
+	info.moves = 0;
+	run_all_checks(argv, &info);
+	info.mlx = mlx_init(WIDTH, HEIGHT, "So long and thanks", true);
+	if (!info.mlx)
+		error_handling("Failed to allocate mlx", NULL, &info);
+	loading_images(&info);
+	map_render(&info);
+	// mlx_loop_hook(info.mlx, ft_hook, info);
+	mlx_key_hook(info.mlx, ft_hook, &info);
 	//OR || AND
-	// mlx_loop_hook(info->mlx, ft_hook, info->mlx);
-	mlx_loop(info->mlx);
-	mlx_terminate(info->mlx);
+	// mlx_loop_hook(info.mlx, ft_hook, info.mlx);
+	mlx_loop(info.mlx);
+	mlx_terminate(info.mlx);
 	ft_printf("You reached the end of the main function...");
 	return (EXIT_SUCCESS);
 }
@@ -64,6 +64,7 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 			go_right(info);
 		if (current_position.x != info->pawn_position.x || current_position.y != info->pawn_position.y)
 		{
+			ft_printf("info->split_map[info->pawn_position.x][info->pawn_position.y] = info->split_map[%d][%d] =%c\n", info->pawn_position.y, info->pawn_position.x, info->split_map[info->pawn_position.y][info->pawn_position.x]);
 			ft_printf("Moves: %d\n", info->moves);
 			current_position = info->pawn_position;
 		}

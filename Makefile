@@ -2,7 +2,8 @@
 #									CONSTANTS								   #
 ################################################################################
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g   -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g 
+# -fsanitize=address
 LIBFT_PATH = ./Libft
 LIBFT = $(LIBFT_PATH)/libft.a
 # LDFLAGS = -L $(LIBFT_PATH) -lft
@@ -22,7 +23,8 @@ SRCS =	$(PARSING_PATH)/valid_parse.c \
 		$(PARSING_PATH)/flood.c \
 		main.c \
 		initialization.c \
-		go_places.c
+		go_places.c \
+		checks.c
 
 OBJS = $(SRCS:.c=.o)
 

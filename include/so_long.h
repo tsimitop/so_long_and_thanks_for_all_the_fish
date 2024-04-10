@@ -22,7 +22,7 @@ typedef struct 	s_point
 
 typedef struct	s_game
 {
-	char	buffer[450];
+	char	buffer[1000];
 	mlx_t	*mlx;
 	int		height;
 	int		width;
@@ -39,7 +39,6 @@ typedef struct	s_game
 	mlx_image_t	*image_wall;
 	mlx_image_t	*image_exit;
 	mlx_image_t	*image_coin;
-
 	// char	**allocated_map; //remove, works with split map
 	// char	*collectible_path_png;
 	// char	*pawn_path_png;
@@ -72,6 +71,7 @@ void	go_right(t_game *info);
 void	ft_hook(mlx_key_data_t	cur_key, void *game);
 void	map_render(t_game *info);
 void	loading_images(t_game *info);
-
+void	print_buffer(t_game *info);
+void print_spl_buf(char **spl_buf);
 
 #endif

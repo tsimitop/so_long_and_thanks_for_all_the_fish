@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/09 20:03:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:12:40 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	run_all_checks(char **argv, t_game *info)
 	spl_buf = split_buffer(info, &esc, &coin, &pawn);
 	if (!spl_buf)
 		return ;
+// print_spl_buf(spl_buf);
+// print_spl_buf(info->split_map);
 	if (spl_buf && (coin < 1 || esc != 1 || pawn != 1))
 	{
 		free_split(spl_buf);
@@ -48,26 +50,29 @@ void	assign_values(t_game *info, int *esc, int *coin)
 
 void	check_walls_paths(char **spl_buf, t_game *info)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	while (spl_buf[i])
+	int		y;
+	int		x;
+// ft_printf("hi\n");
+	y = 0;
+	while (spl_buf[y])
 	{
-		j = 0;
-		while (spl_buf[i][j])
+// ft_printf("%c", spl_buf[0][0]);
+// ft_printf("%c", spl_buf[y][x]);
+		x = 0;
+		while (spl_buf[y][x])
 		{
-			if (spl_buf[i][j] == 'P')
+			if (spl_buf[y][x] == 'P')
 			{
-				ft_printf("j = %i\n", j);
-				ft_printf("i = %i\n", i);
-				info->pawn_position.x = j;
-				info->pawn_position.y = i;
+				// ft_printf("x = %i\n", x);
+				// ft_printf("i = %i\n", i);
+				info->pawn_position.x = x;
+				info->pawn_position.y = y;
 			}
-			j++;
+			x++;
 		}
-		i++;
+		y++;
 	}
+
 	info->dimentions.x = info->width;
 	info->dimentions.y = info->height;
 	check_walls(spl_buf, info);
@@ -85,6 +90,7 @@ void	check_walls(char **spl_buf, t_game *info)
 	{
 		while (spl_buf[i][j] != '\0')
 		{
+// ft_printf("spl_buf[%d][%d] = %c", i, j, spl_buf[i][j]);
 			if (spl_buf[0][j] != '1' || spl_buf[i][0] != '1' || spl_buf[i][info->width - 1] != '1' || spl_buf[info->height - 1][j] != '1')
 				error_handling("Your map should be surrouded by walls", NULL, info);
 			j++;
