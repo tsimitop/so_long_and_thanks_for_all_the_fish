@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/10 19:40:42 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/13 14:01:36 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,10 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	gnl = get_next_line(fd);
 	if (!gnl)
 		error_handling("Map appears to be empty", NULL, info);
-	ft_strlcpy(info->buffer, gnl, 4000);
+	ft_strlcpy(info->buffer, gnl, 5000);
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
-	if (info->width > 40)
+	if (info->width > 81)
 		error_handling("Map should not have width larger than 40", &fd, info);
 	while (gnl != NULL)
 	{
@@ -131,10 +131,10 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 			error_handling("Map should be rectangular", &fd, info);// add fd and condition if NULL inside function
 		gnl = get_next_line(fd);
 		if (gnl)
-			ft_strlcat(info->buffer, gnl, 4000);
+			ft_strlcat(info->buffer, gnl, 5000);
 	}
 	info->height = count_height;
-	if (info->height > 40)
+	if (info->height > 80)
 		error_handling("Map should not have height larger than 20", &fd, info);
 	close(fd);
 }

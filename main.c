@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/10 19:42:28 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/13 14:21:02 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	main(int argc, char **argv)
 {
 	t_game	info;
+	int screen_width; // put in struct
+	int screen_height;
 
 ft_printf("TODO: fix buffer for set values\n");
 	if (argc != 2)
@@ -26,6 +28,9 @@ ft_printf("TODO: fix buffer for set values\n");
 	info.mlx = mlx_init(info.width * TILE_SIZE, info.height * TILE_SIZE, "So long and thanks", true);
 	if (!info.mlx)
 		error_handling("Failed to allocate mlx", NULL, &info);
+	mlx_get_monitor_size(0, &screen_width, &screen_height);
+	if (info.width * TILE_SIZE > screen_width || info.height * TILE_SIZE > screen_height)
+		error_handling("Cannot fit image on screen!!!", NULL, NULL);
 	loading_images(&info);
 	map_render(&info);
 	// mlx_loop_hook(info.mlx, ft_hook, info);
@@ -38,15 +43,12 @@ ft_printf("TODO: fix buffer for set values\n");
 	ft_printf("You reached the end of the main function...");
 	return (EXIT_SUCCESS);
 }
-
 void	ft_hook(mlx_key_data_t	cur_key, void *game)
 {
 	t_game *info;
 	t_point	current_position;
 
 	info = (t_game *)game;
-// ft_printf("info->split_map[0][0] = %c\n", info->split_map[0][0]);
-// ft_printf("info->split_map[info->pawn_position.x][info->pawn_position.y] = %c\n", info->split_map[info->pawn_position.x][info->pawn_position.y]);
 	current_position = info->pawn_position;
 	if (cur_key.action == MLX_PRESS || cur_key.action == MLX_REPEAT)
 	{
@@ -66,12 +68,6 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 			go_right(info);
 		if (current_position.x != info->pawn_position.x || current_position.y != info->pawn_position.y)
 		{
-			// ft_printf("info->split_map[info->pawn_position.y][info->pawn_position.x] = info->split_map[%d][%d] =%c\n", info->pawn_position.y, info->pawn_position.x, info->split_map[info->pawn_position.y][info->pawn_position.x]);
-			// ft_printf("info->image_pawn->instances[0].y = %i\tinfo->image_pawn->instances[0].x = %i\n", info->image_pawn->instances[0].y, info->image_pawn->instances[0].x);
-			// if (info->image_pawn->instances[0].enabled)
-				// ft_printf("true\n");
-			// else
-				// ft_printf("false");
 			ft_printf("Moves: %d\n", info->moves);
 			current_position = info->pawn_position;
 		}

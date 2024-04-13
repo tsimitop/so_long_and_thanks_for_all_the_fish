@@ -3,7 +3,7 @@
 
 // # define WIDTH 1000
 // # define HEIGHT 1000
-# define TILE_SIZE 64 // biggest will be 64
+# define TILE_SIZE 32 // biggest will be 64
 // # define UP info->split_map[info->pawn_position.x - 1][info->pawn_position.y]
 // # define DOWN info->split_map[info->pawn_position.x + 1][info->pawn_position.y]
 // # define LEFT info->split_map[info->pawn_position.x][info->pawn_position.y - 1]
@@ -22,11 +22,11 @@ typedef struct 	s_point
 
 typedef struct	s_game
 {
-	char	buffer[4000];
+	char	buffer[5000];
 	// char	*buffer;
 	mlx_t	*mlx;
-	int		height; //max height for 64 = 20
-	int		width; //max width for 64 = 40
+	int		height; //max height for 32 = 40
+	int		width; //max width for 32 = 79
 	int		escape;
 	int		coins;
 	int		init_coins;
