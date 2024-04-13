@@ -22,19 +22,18 @@ typedef struct 	s_point
 
 typedef struct	s_game
 {
-	char	buffer[5000];
-	// char	*buffer;
 	mlx_t	*mlx;
-	int		height; //max height for 32 = 40
-	int		width; //max width for 32 = 79
+	int		height;
+	int		width;
 	int		escape;
 	int		coins;
 	int		init_coins;
 	t_point	dimentions;
 	t_point	pawn_position;
-	char	**split_map; //free
+	char	**split_map;
 	char	*argv_map;
 	int		moves;
+	char	*instead_of_buffer;
 	mlx_image_t	*image_pawn;
 	mlx_image_t	*image_floor;
 	mlx_image_t	*image_wall;
@@ -51,14 +50,12 @@ void	check_walls(char **spl_buf, t_game *info);
 char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn);
 void	check_map_file_cont(char **argv, t_game *info);
 void	fill_buffer_check_rect_empty(int fd, t_game *info);
-void	error_handling(char *str, int *fd, t_game *info);
+void	error_handling(char *str, int *fd);
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 int		check_rect(char *gnl);
 void	assign_values(t_game *info, int *esc, int *coin);
 
-// void	map_init(t_game *info);
 void	put_wall_floor(t_game *info, char c, int i, int j);
-// mlx_image_t	*put_element(t_game *info, int i, int j, char *str);
 void	go_up(t_game *info);
 void	go_left(t_game *info);
 void	go_down(t_game *info);

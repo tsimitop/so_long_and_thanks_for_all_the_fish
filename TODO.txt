@@ -1,7 +1,5 @@
-make sure that clicking the red cross button to  exit the window exits in a clean way
-At every move, the current number of movements must be displayed in the shell.
-
-
+free
+	info->instead_of_buffer
 
 0 for an empty space
 1 for a wall
@@ -26,17 +24,17 @@ parsing
 
 	OK check for invalid characters
 
-	map is closed/surrounded by walls. If it’s not, the program must return an error
+	OK map is closed/surrounded by walls. If it’s not, the program must return an error
 
-	check if there’s a valid path in the map
-	coins and exit must be reachable (flood fill)
-	no valid path (flood fill)
-	no route to collectibles (flood fill)
+	OK check if there’s a valid path in the map
+	OK coins and exit must be reachable (flood fill)
+	OK no valid path (flood fill)
+	OK no route to collectibles (flood fill)
 
-	You must be able to parse any kind of map, as long as it respects the above rules
+	OK You must be able to parse any kind of map, as long as it respects the above rules
 
-	If any misconfiguration of any kind is encountered in the file, the program must
-	exit in a clean way, and return "Error\n" followed by an explicit error message of
-	your choice.
+	OK If any misconfiguration of any kind is encountered in the file, the program must
+	   exit in a clean way, and return "Error\n" followed by an explicit error message of
+	   your choice.
 
-	check for map dimensions?
+	OK check for map dimensions?

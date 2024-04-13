@@ -2,7 +2,7 @@
 #									CONSTANTS								   #
 ################################################################################
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 # -fsanitize=address
 LIBFT_PATH = ./Libft
 LIBFT = $(LIBFT_PATH)/libft.a

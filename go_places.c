@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/09 14:50:56 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/10 19:29:06 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/13 19:45:23 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	go_left(t_game *info)
 			info->pawn_position.x = new_x;
 		}
 	}
-	else if (info->split_map[old_y][new_x] == '0')
+	else if (info->split_map[old_y][new_x] == '0' || info->split_map[old_y][new_x] == 'P')
 	{
 		info->moves += 1;
 		info->pawn_position.x = new_x;
@@ -86,7 +86,7 @@ void	go_up(t_game *info)
 			info->pawn_position.y = new_y;
 		}
 	}
-	else if (info->split_map[new_y][old_x] == '0')
+	else if (info->split_map[new_y][old_x] == '0' || info->split_map[new_y][old_x] == 'P')
 	{
 		info->moves += 1;
 		info->pawn_position.y = new_y;
@@ -126,7 +126,7 @@ void	go_right(t_game *info)
 			info->pawn_position.x = new_x;
 		}
 	}
-	else if (info->split_map[old_y][new_x] == '0')
+	else if (info->split_map[old_y][new_x] == '0' || info->split_map[old_y][new_x] == 'P')
 	{
 		info->moves += 1;
 		info->pawn_position.x = new_x;
@@ -166,7 +166,7 @@ void	go_down(t_game *info)
 			info->pawn_position.y = new_y;
 		}
 	}
-	else if (info->split_map[new_y][old_x] == '0')
+	else if (info->split_map[new_y][old_x] == '0' || info->split_map[new_y][old_x] == 'P')
 	{
 		info->moves += 1;
 		info->pawn_position.y = new_y;

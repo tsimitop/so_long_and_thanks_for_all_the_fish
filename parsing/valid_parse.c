@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 14:01:36 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/13 15:12:52 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	run_all_checks(char **argv, t_game *info)
 	{
 		free_split(spl_buf);
 		if (coin < 1)
-			error_handling("You need at least one collectable in your map", NULL, info);
+			error_handling("You need at least one collectable in your map", NULL);
 		if (esc != 1)
-			error_handling("You need one exit per map, no more, no less", NULL, info);
+			error_handling("You need one exit per map, no more, no less", NULL);
 		if (pawn != 1)
-			error_handling("One player is required to play, no more, no less", NULL, info);
+			error_handling("One player is required to play, no more, no less", NULL);
 	}
 	assign_values(info, &esc, &coin);
 	check_walls_paths(spl_buf, info);
@@ -86,7 +86,7 @@ void	check_walls(char **spl_buf, t_game *info)
 		while (spl_buf[i][j] != '\0')
 		{
 			if (spl_buf[0][j] != '1' || spl_buf[i][0] != '1' || spl_buf[i][info->width - 1] != '1' || spl_buf[info->height - 1][j] != '1')
-				error_handling("Your map should be surrouded by walls", NULL, info);
+				error_handling("Your map should be surrouded by walls", NULL);
 			j++;
 		}
 		j = 0;
@@ -100,10 +100,10 @@ void	check_map_file_cont(char **argv, t_game *info)
 	int	fd;
 
 	if (ft_strncmp(".ber", argv[1] + (ft_strlen(argv[1]) - 4), 5) != 0)
-		error_handling("Wrong file type. Map should be of type .ber", NULL, info);
+		error_handling("Wrong file type. Map should be of type .ber", NULL);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		error_handling("Unable to open file or file does not exist", NULL, info);
+		error_handling("Unable to open file or file does not exist", NULL);
 	fill_buffer_check_rect_empty(fd, info);
 }
 
@@ -113,29 +113,38 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	char	*gnl;
 	int		new_line;
 	int		count_height;
+	char	*temp;
 
 	count_height = 0;
 	gnl = get_next_line(fd);
 	if (!gnl)
-		error_handling("Map appears to be empty", NULL, info);
-	ft_strlcpy(info->buffer, gnl, 5000);
+		error_handling("Map appears to be empty", NULL);
+	info->instead_of_buffer = ft_strjoin("", gnl);
+	if (!info->instead_of_buffer)
+		error_handling("info->instead_of_buffer not allocated", NULL);
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
-	if (info->width > 81)
-		error_handling("Map should not have width larger than 40", &fd, info);
 	while (gnl != NULL)
 	{
 		count_height++;
 		new_line = check_rect(gnl);
 		if (gnl_len != (ft_strlen(gnl) + new_line))
-			error_handling("Map should be rectangular", &fd, info);// add fd and condition if NULL inside function
+		{
+			free_split(&info->instead_of_buffer);
+			error_handling("Map should be rectangular", &fd); //free info->instead_of_buffer
+		}
 		gnl = get_next_line(fd);
 		if (gnl)
-			ft_strlcat(info->buffer, gnl, 5000);
+		{	temp = info->instead_of_buffer;
+			info->instead_of_buffer = ft_strjoin(temp, gnl);
+			if (!info->instead_of_buffer)
+			{
+				free_split(&info->instead_of_buffer);
+				error_handling("info->instead_of_buffer not allocated", NULL);
+			}
+		}
 	}
 	info->height = count_height;
-	if (info->height > 80)
-		error_handling("Map should not have height larger than 20", &fd, info);
 	close(fd);
 }
 
@@ -157,10 +166,10 @@ char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn)
 	int		i;
 
 	i = 0;
-	spl_buf = ft_split(info->buffer, '\n');
+	spl_buf = ft_split(info->instead_of_buffer, '\n');
 	if (!spl_buf)
-		error_handling("Split failed", NULL, info);
-	info->split_map = ft_split(info->buffer, '\n');
+		error_handling("Split failed", NULL);
+	info->split_map = ft_split(info->instead_of_buffer, '\n');
 	while (spl_buf[i])
 	{
 		check_exit_coin_pawn(spl_buf[i], esc, coin, pawn);
@@ -178,7 +187,7 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	{
 		if (str[i] != '0' && str[i] != '1' && str[i] != 'C' && str[i] != 'P' \
 			&& str[i] != 'E' && str[i] != '\n')
-			error_handling("Invalid character in map.", NULL, NULL); //fix ret to free node
+			error_handling("Invalid character in map.", NULL); //fix ret to free node
 		if (str[i] == 'C')
 			(*coin)++;
 		else if (str[i] == 'E')
@@ -189,11 +198,8 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	}
 }
 
-void	error_handling(char *str, int *fd, t_game *info)
+void	error_handling(char *str, int *fd)
 {
-	// if (info)
-	// 	free(info);
-	(void)info;
 	if (fd)
 		close(*fd);
 	ft_printf("\033[0;31mError\033[0m\n");
