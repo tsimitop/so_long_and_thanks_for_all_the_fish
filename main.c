@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 19:39:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 15:45:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	main(int argc, char **argv)
 	atexit(&checkleaks);
 	if (argc != 2)
 		error_handling("Arguments should be: ./so_long map.ber\n", NULL);
-	info.argv_map = argv[1];
 	info.moves = 0;
+	info.collected_coins = 0;
 	run_all_checks(argv, &info);
 	info.mlx = mlx_init(info.width * TILE_SIZE, info.height * TILE_SIZE, "So long and thanks", true);
 	if (!info.mlx)
@@ -37,9 +37,7 @@ int	main(int argc, char **argv)
 		error_handling("Cannot fit map on screen!!!", NULL);
 	loading_images(&info);
 	map_render(&info);
-	// mlx_loop_hook(info.mlx, ft_hook, info);
 	mlx_key_hook(info.mlx, ft_hook, &info);
-	// mlx_loop_hook(info.mlx, ft_hook, info.mlx);
 	mlx_loop(info.mlx);
 	mlx_terminate(info.mlx);
 	system("leaks so_long");
@@ -57,6 +55,9 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 	{
 		if (cur_key.key == MLX_KEY_ESCAPE)
 		{
+// ft_printf("info->user_way_out = %i\n", info->user_way_out);
+			free(info->initial_map);
+			free_split(info->split_map);
 			mlx_close_window(info->mlx);
 			exit(EXIT_SUCCESS);
 		}
@@ -70,8 +71,61 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 			go_right(info);
 		if (current_position.x != info->pawn_position.x || current_position.y != info->pawn_position.y)
 		{
+// ft_printf("info->user_way_out = %i\n", info->user_way_out);
 			ft_printf("Moves: %d\n", info->moves);
 			current_position = info->pawn_position;
+		}
+	}
+}
+
+int	calculate_shortest_route(t_game *info, int y, int x)
+{
+	int	move_counter;
+
+	move_counter = 0;
+	calc_moves_to_exit_y(info, y, &move_counter);
+	calc_moves_to_exit_x(info, x, &move_counter);
+	info->collected_coins = 1;
+	info->fastest_way_out = move_counter;
+	return (move_counter);
+}
+
+void	calc_moves_to_exit_y(t_game *info, int y, int *move_counter)
+{
+	if (y < info->exit_position.y)
+	{
+		while (y < info->exit_position.y)
+		{
+			(*move_counter)++;
+			y++;
+		}
+	}
+	else if (y > info->exit_position.y)
+	{
+		while (y > info->exit_position.y)
+		{
+			(*move_counter)++;
+			y--;
+		}
+	}
+}
+
+void	calc_moves_to_exit_x(t_game *info, int x, int (*move_counter))
+{
+	if (x < info->exit_position.x)
+	{
+		while (x < info->exit_position.x)
+		{
+			(*move_counter)++;
+			x++;
+		}
+	}
+	else if (x > info->exit_position.x)
+	{
+		while (x > info->exit_position.x)
+		{
+			(*move_counter)++;
+			x--;
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 15:12:52 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 16:05:32 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,29 @@ void	check_walls_paths(char **spl_buf, t_game *info)
 		x = 0;
 		while (spl_buf[y][x])
 		{
-			if (spl_buf[y][x] == 'P')
-			{
-				info->pawn_position.x = x;
-				info->pawn_position.y = y;
-			}
+			set_exit_pawn_positions(info, spl_buf[y][x], x, y);
 			x++;
 		}
 		y++;
 	}
-
 	info->dimentions.x = info->width;
 	info->dimentions.y = info->height;
 	check_walls(spl_buf, info);
 	check_paths(spl_buf, info);
+}
+
+void	set_exit_pawn_positions(t_game *info, char c, int x, int y)
+{
+	if (c == 'E')
+	{
+		info->exit_position.x = x;
+		info->exit_position.y = y;
+	}
+	if (c == 'P')
+	{
+		info->pawn_position.x = x;
+		info->pawn_position.y = y;
+	}
 }
 
 void	check_walls(char **spl_buf, t_game *info)
@@ -113,15 +122,14 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	char	*gnl;
 	int		new_line;
 	int		count_height;
-	char	*temp;
 
 	count_height = 0;
 	gnl = get_next_line(fd);
 	if (!gnl)
 		error_handling("Map appears to be empty", NULL);
-	info->instead_of_buffer = ft_strjoin("", gnl);
-	if (!info->instead_of_buffer)
-		error_handling("info->instead_of_buffer not allocated", NULL);
+	info->initial_map = ft_strjoin("", gnl);
+	if (!info->initial_map)
+		error_handling("info->initial_map not allocated", NULL);
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
 	while (gnl != NULL)
@@ -129,23 +137,29 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 		count_height++;
 		new_line = check_rect(gnl);
 		if (gnl_len != (ft_strlen(gnl) + new_line))
-		{
-			free_split(&info->instead_of_buffer);
-			error_handling("Map should be rectangular", &fd); //free info->instead_of_buffer
-		}
+			free_info_error_handling("Map should be rectangular", &fd, info);
 		gnl = get_next_line(fd);
 		if (gnl)
-		{	temp = info->instead_of_buffer;
-			info->instead_of_buffer = ft_strjoin(temp, gnl);
-			if (!info->instead_of_buffer)
-			{
-				free_split(&info->instead_of_buffer);
-				error_handling("info->instead_of_buffer not allocated", NULL);
-			}
-		}
+			fill_initial_map(info, gnl, &fd);
 	}
 	info->height = count_height;
 	close(fd);
+}
+
+void	fill_initial_map(t_game *info, char *gnl, int *fd)
+{
+	char	*temp;
+
+	temp = info->initial_map;
+	info->initial_map = ft_strjoin(temp, gnl);
+	if (!info->initial_map)
+	{
+		close(*fd);
+		free(temp);
+		free(gnl);
+		free_info_error_handling("info->initial_map not allocated", fd, info);
+	}
+	free(temp);
 }
 
 int	check_rect(char *gnl)
@@ -166,10 +180,10 @@ char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn)
 	int		i;
 
 	i = 0;
-	spl_buf = ft_split(info->instead_of_buffer, '\n');
+	spl_buf = ft_split(info->initial_map, '\n');
 	if (!spl_buf)
 		error_handling("Split failed", NULL);
-	info->split_map = ft_split(info->instead_of_buffer, '\n');
+	info->split_map = ft_split(info->initial_map, '\n');
 	while (spl_buf[i])
 	{
 		check_exit_coin_pawn(spl_buf[i], esc, coin, pawn);
@@ -187,7 +201,7 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	{
 		if (str[i] != '0' && str[i] != '1' && str[i] != 'C' && str[i] != 'P' \
 			&& str[i] != 'E' && str[i] != '\n')
-			error_handling("Invalid character in map.", NULL); //fix ret to free node
+			error_handling("Invalid character in map.", NULL);
 		if (str[i] == 'C')
 			(*coin)++;
 		else if (str[i] == 'E')
@@ -198,11 +212,3 @@ void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn)
 	}
 }
 
-void	error_handling(char *str, int *fd)
-{
-	if (fd)
-		close(*fd);
-	ft_printf("\033[0;31mError\033[0m\n");
-	ft_printf("%s\n", str);
-	exit(EXIT_FAILURE);
-}

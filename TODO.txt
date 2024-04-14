@@ -1,5 +1,5 @@
 free
-	info->instead_of_buffer
+	info->initial_map
 
 0 for an empty space
 1 for a wall

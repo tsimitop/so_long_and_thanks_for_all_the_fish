@@ -22,23 +22,26 @@ typedef struct 	s_point
 
 typedef struct	s_game
 {
-	mlx_t	*mlx;
-	int		height;
-	int		width;
-	int		escape;
-	int		coins;
-	int		init_coins;
-	t_point	dimentions;
-	t_point	pawn_position;
-	char	**split_map;
-	char	*argv_map;
-	int		moves;
-	char	*instead_of_buffer;
+	mlx_t		*mlx;
+	int			height;
+	int			width;
+	int			escape;
+	int			coins;
+	int			init_coins;
+	t_point		dimentions;
+	t_point		pawn_position;
+	t_point		exit_position;
+	char		**split_map;
+	int			moves;
+	char		*initial_map;
 	mlx_image_t	*image_pawn;
 	mlx_image_t	*image_floor;
 	mlx_image_t	*image_wall;
 	mlx_image_t	*image_exit;
 	mlx_image_t	*image_coin;
+	int			fastest_way_out;
+	int			user_way_out;
+	int			collected_coins;
 }				t_game;
 
 void	run_all_checks(char **argv,t_game *info);
@@ -49,8 +52,11 @@ void	fill(char **spl_buf, t_point size, t_point spot);
 void	check_walls(char **spl_buf, t_game *info);
 char	**split_buffer(t_game *info, int *esc, int *coin, int *pawn);
 void	check_map_file_cont(char **argv, t_game *info);
+// void	fill_buffer_check_rect_empty(int fd, t_game *info, int *count_height);
 void	fill_buffer_check_rect_empty(int fd, t_game *info);
+
 void	error_handling(char *str, int *fd);
+void	free_info_error_handling(char *str, int *fd, t_game *info);
 void	check_exit_coin_pawn(char *str, int *esc, int *coin, int *pawn);
 int		check_rect(char *gnl);
 void	assign_values(t_game *info, int *esc, int *coin);
@@ -67,5 +73,10 @@ void	print_buffer(t_game *info);
 void	print_spl_buf(char **spl_buf);
 void	remove_coin_instance(t_game *info);
 void	put_coin_pawn(t_game *info, char c, int i, int j);
+int		calculate_shortest_route(t_game *info, int y, int x);
+void	calc_moves_to_exit_y(t_game *info, int y, int *move_counter);
+void	calc_moves_to_exit_x(t_game *info, int x, int *move_counter);
+void	set_exit_pawn_positions(t_game *info, char c, int x, int y);
+void	fill_initial_map(t_game *info, char *gnl, int *fd);
 
 #endif

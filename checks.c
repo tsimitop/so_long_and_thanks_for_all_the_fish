@@ -6,11 +6,31 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 14:45:48 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 15:45:35 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	error_handling(char *str, int *fd)
+{
+	if (fd)
+		close(*fd);
+	ft_printf("\033[0;31mError\033[0m\n");
+	ft_printf("%s\n", str);
+	exit(EXIT_FAILURE);
+}
+
+void	free_info_error_handling(char *str, int *fd, t_game *info)
+{
+	if (fd)
+		close(*fd);
+	free_split(info->split_map);
+	free(info->initial_map);
+	ft_printf("\033[0;31mError\033[0m\n");
+	ft_printf("%s\n", str);
+	exit(EXIT_FAILURE);
+}
 
 void	remove_coin_instance(t_game *info)
 {
@@ -35,9 +55,9 @@ void	print_buffer(t_game *info)
 	int i;
 
 	i = 0;
-	while (info->instead_of_buffer[i] != '\0')
+	while (info->initial_map[i] != '\0')
 	{
-		ft_printf("%c", info->instead_of_buffer[i]);
+		ft_printf("%c", info->initial_map[i]);
 		i++;
 	}
 }
