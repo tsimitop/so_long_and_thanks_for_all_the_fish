@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 16:27:42 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 15:04:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 17:05:45 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,31 @@ void	map_render(t_game *info)
 
 	i = 0;
 	j = 0;
+	render_map_base(info);
 	while (info->split_map[i])
 	{
 		while (info->split_map[i][j])
 		{
-			put_wall_floor(info, info->split_map[i][j], j, i);
+			put_coin_pawn(info, info->split_map[i][j], j, i);
 			j++;
 		}
 		i++;
 		j = 0;
 	}
+}
+
+void	render_map_base(t_game *info)
+{
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	while (info->split_map[i])
 	{
 		while (info->split_map[i][j])
 		{
-			put_coin_pawn(info, info->split_map[i][j], j, i);
+			put_wall_floor(info, info->split_map[i][j], j, i);
 			j++;
 		}
 		i++;

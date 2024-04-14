@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 16:05:32 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 19:26:23 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	run_all_checks(char **argv, t_game *info)
 	if (spl_buf && (coin < 1 || esc != 1 || pawn != 1))
 	{
 		free_split(spl_buf);
+		free_split(info->split_map);
 		if (coin < 1)
 			error_handling("You need at least one collectable in your map", NULL);
 		if (esc != 1)
@@ -95,7 +96,11 @@ void	check_walls(char **spl_buf, t_game *info)
 		while (spl_buf[i][j] != '\0')
 		{
 			if (spl_buf[0][j] != '1' || spl_buf[i][0] != '1' || spl_buf[i][info->width - 1] != '1' || spl_buf[info->height - 1][j] != '1')
+			{
+				free_split(spl_buf);
+				free_split(info->split_map);
 				error_handling("Your map should be surrouded by walls", NULL);
+			}
 			j++;
 		}
 		j = 0;
@@ -126,10 +131,13 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	count_height = 0;
 	gnl = get_next_line(fd);
 	if (!gnl)
-		error_handling("Map appears to be empty", NULL);
+		error_handling("Map appears to be empty", &fd);
 	info->initial_map = ft_strjoin("", gnl);
 	if (!info->initial_map)
+	{
+		free(gnl);
 		error_handling("info->initial_map not allocated", NULL);
+	}
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
 	while (gnl != NULL)
@@ -137,7 +145,11 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 		count_height++;
 		new_line = check_rect(gnl);
 		if (gnl_len != (ft_strlen(gnl) + new_line))
+		{
+			free(gnl);
 			free_info_error_handling("Map should be rectangular", &fd, info);
+		}
+		free(gnl);
 		gnl = get_next_line(fd);
 		if (gnl)
 			fill_initial_map(info, gnl, &fd);

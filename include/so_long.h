@@ -78,5 +78,11 @@ void	calc_moves_to_exit_y(t_game *info, int y, int *move_counter);
 void	calc_moves_to_exit_x(t_game *info, int x, int *move_counter);
 void	set_exit_pawn_positions(t_game *info, char c, int x, int y);
 void	fill_initial_map(t_game *info, char *gnl, int *fd);
+void	render_map_base(t_game *info);
+void	esc_key_result(t_game *info);
+
+void	collectible_case(t_game *info, int y, int x);
+void	exit_case(t_game *info);
+
 
 #endif

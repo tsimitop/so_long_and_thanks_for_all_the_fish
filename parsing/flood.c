@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 15:06:29 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/13 15:03:02 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 17:11:07 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	check_paths(char **spl_buf, t_game *info)
 		i++;
 		j = 0;
 	}
+	free_split(spl_buf);
 }
 
 void static	free_buf_error(char **spl_buf, char c)

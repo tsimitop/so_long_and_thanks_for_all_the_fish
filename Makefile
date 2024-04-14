@@ -24,7 +24,8 @@ SRCS =	$(PARSING_PATH)/valid_parse.c \
 		main.c \
 		initialization.c \
 		go_places.c \
-		checks.c
+		checks.c \
+		position_cases.c
 
 OBJS = $(SRCS:.c=.o)
 

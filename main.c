@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 15:45:35 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:49:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 	info.moves = 0;
 	info.collected_coins = 0;
 	run_all_checks(argv, &info);
-	info.mlx = mlx_init(info.width * TILE_SIZE, info.height * TILE_SIZE, "So long and thanks", true);
+	info.mlx = mlx_init(info.width * TILE_SIZE, info.height * TILE_SIZE, "So long and thanks", false);
 	if (!info.mlx)
 		error_handling("Failed to allocate mlx", NULL);
 	mlx_get_monitor_size(0, &screen_width, &screen_height);
@@ -40,10 +40,11 @@ int	main(int argc, char **argv)
 	mlx_key_hook(info.mlx, ft_hook, &info);
 	mlx_loop(info.mlx);
 	mlx_terminate(info.mlx);
-	system("leaks so_long");
+	// system("leaks so_long");
 	ft_printf("You reached the end of the main function...");
 	return (EXIT_SUCCESS);
 }
+
 void	ft_hook(mlx_key_data_t	cur_key, void *game)
 {
 	t_game *info;
@@ -54,13 +55,7 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 	if (cur_key.action == MLX_PRESS || cur_key.action == MLX_REPEAT)
 	{
 		if (cur_key.key == MLX_KEY_ESCAPE)
-		{
-// ft_printf("info->user_way_out = %i\n", info->user_way_out);
-			free(info->initial_map);
-			free_split(info->split_map);
-			mlx_close_window(info->mlx);
-			exit(EXIT_SUCCESS);
-		}
+			esc_key_result(info);
 		if (cur_key.key == MLX_KEY_UP || cur_key.key == MLX_KEY_W)
 			go_up(info);
 		else if (cur_key.key == MLX_KEY_DOWN || cur_key.key == MLX_KEY_S)
@@ -71,11 +66,18 @@ void	ft_hook(mlx_key_data_t	cur_key, void *game)
 			go_right(info);
 		if (current_position.x != info->pawn_position.x || current_position.y != info->pawn_position.y)
 		{
-// ft_printf("info->user_way_out = %i\n", info->user_way_out);
 			ft_printf("Moves: %d\n", info->moves);
 			current_position = info->pawn_position;
 		}
 	}
+}
+
+void	esc_key_result(t_game *info)
+{
+	free(info->initial_map);
+	free_split(info->split_map);
+	mlx_close_window(info->mlx);
+	exit(EXIT_SUCCESS);
 }
 
 int	calculate_shortest_route(t_game *info, int y, int x)
