@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/15 22:59:29 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:46:49 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,9 +141,9 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	gnl = get_next_line(fd);
 	// if (!gnl)
 	// 	error_handling("GNL failed", &fd);
-free(gnl);
-close(fd);
-exit(0);
+// free(gnl);
+// close(fd);
+// exit(0);
 	info->initial_map = ft_strjoin("", gnl);
 	if (!info->initial_map)
 	{
@@ -177,7 +177,7 @@ exit(0);
 	if (info->not_rectangular == 1)
 	{
 		free(gnl);
-		free_info_error_handling("Map should be rectangular", &fd, info);
+		free_init_map_error_handling("Map should be rectangular", &fd, info);
 	}
 	if (gnl)
 		free(gnl);

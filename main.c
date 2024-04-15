@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/15 22:30:37 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:45:25 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	t_game	info;
 	int screen_width; // put in struct
 	int screen_height;
-	atexit(&checkleaks);
+	// atexit(&checkleaks);
 	if (argc != 2)
 		error_handling("Arguments should be: ./so_long map.ber\n", NULL);
 	info.moves = 0;

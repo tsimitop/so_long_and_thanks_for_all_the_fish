@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:12:05 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/15 23:02:27 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:52:17 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,20 @@ char	*read_line(char *line_const, int fd)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	int		chars_read;
+	char	*temp;
 
 	chars_read = 1;
-	while (line_const && (!ft_strchr(line_const, '\n')) && chars_read > 0)
+	while (chars_read > 0)
 	{
 		chars_read = read(fd, buffer, BUFFER_SIZE);
 		if (chars_read == -1)
-			return (free(buffer), NULL);
+			return (NULL);
 		buffer[chars_read] = '\0';
-		line_const = ft_strjoin(line_const, buffer);
+		temp = line_const;
+		line_const = ft_strjoin(temp, buffer);
+		if (!line_const)
+			return (NULL);
+		free(temp);
 	}
 	return (line_const);
 }
