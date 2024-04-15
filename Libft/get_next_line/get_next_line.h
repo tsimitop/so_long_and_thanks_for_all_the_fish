@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 20:26:13 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 19:56:23 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:04:14 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 50
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd);

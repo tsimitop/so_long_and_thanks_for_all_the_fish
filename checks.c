@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 19:24:04 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:23:47 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,21 @@ void	free_info_error_handling(char *str, int *fd, t_game *info)
 {
 	if (fd)
 		close(*fd);
-	free_split(info->split_map);
-	free(info->initial_map);
+	if (info->split_map)
+		free_split(info->split_map);
+	if (info->initial_map)
+		free(info->initial_map);
+	ft_printf("\033[0;31mError\033[0m\n");
+	ft_printf("%s\n", str);
+	exit(EXIT_FAILURE);
+}
+
+void	free_init_map_error_handling(char *str, int *fd, t_game *info)
+{
+	if (fd)
+		close(*fd);
+	if (info->initial_map)
+		free(info->initial_map);
 	ft_printf("\033[0;31mError\033[0m\n");
 	ft_printf("%s\n", str);
 	exit(EXIT_FAILURE);

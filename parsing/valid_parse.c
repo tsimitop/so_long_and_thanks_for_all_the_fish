@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 11:42:50 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 19:26:23 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:59:29 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,18 @@ void	check_walls(char **spl_buf, t_game *info)
 void	check_map_file_cont(char **argv, t_game *info)
 {
 	int	fd;
+	int	read_int;
+	char	buffer[1];
 
 	if (ft_strncmp(".ber", argv[1] + (ft_strlen(argv[1]) - 4), 5) != 0)
 		error_handling("Wrong file type. Map should be of type .ber", NULL);
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		error_handling("Unable to open file or file does not exist", NULL);
+	read_int = read(fd, buffer, 1);
+	if (read_int == 0)
+		error_handling("Map appears to be empty", &fd);
+	close(fd);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		error_handling("Unable to open file or file does not exist", NULL);
@@ -130,8 +139,11 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 
 	count_height = 0;
 	gnl = get_next_line(fd);
-	if (!gnl)
-		error_handling("Map appears to be empty", &fd);
+	// if (!gnl)
+	// 	error_handling("GNL failed", &fd);
+free(gnl);
+close(fd);
+exit(0);
 	info->initial_map = ft_strjoin("", gnl);
 	if (!info->initial_map)
 	{
@@ -140,25 +152,41 @@ void	fill_buffer_check_rect_empty(int fd, t_game *info)
 	}
 	gnl_len = ft_strlen(gnl);
 	info->width = gnl_len - 1;
-	while (gnl != NULL)
+	while (gnl)
 	{
 		count_height++;
 		new_line = check_rect(gnl);
 		if (gnl_len != (ft_strlen(gnl) + new_line))
 		{
-			free(gnl);
-			free_info_error_handling("Map should be rectangular", &fd, info);
+			// while (gnl != NULL)
+			// {
+			// 	free(gnl);
+			// 	gnl = get_next_line(fd);
+			// }
+			// if (gnl)
+			// free(gnl);
+			// free_init_map_error_handling("Map should be rectangular", &fd, info);
+			// CREATE MAP INITIALLY AND CHECK IN A LOOP LATER
+			info->not_rectangular = 1;
 		}
 		free(gnl);
 		gnl = get_next_line(fd);
 		if (gnl)
-			fill_initial_map(info, gnl, &fd);
+			fill_initial_map(info, gnl, fd);
 	}
+	if (info->not_rectangular == 1)
+	{
+		free(gnl);
+		free_info_error_handling("Map should be rectangular", &fd, info);
+	}
+	if (gnl)
+		free(gnl);
 	info->height = count_height;
 	close(fd);
+// free_info_error_handling("TEST", NULL, info);
 }
 
-void	fill_initial_map(t_game *info, char *gnl, int *fd)
+void	fill_initial_map(t_game *info, char *gnl, int fd)
 {
 	char	*temp;
 
@@ -166,10 +194,10 @@ void	fill_initial_map(t_game *info, char *gnl, int *fd)
 	info->initial_map = ft_strjoin(temp, gnl);
 	if (!info->initial_map)
 	{
-		close(*fd);
+		close(fd);
 		free(temp);
 		free(gnl);
-		free_info_error_handling("info->initial_map not allocated", fd, info);
+		free_info_error_handling("info->initial_map not allocated", &fd, info);
 	}
 	free(temp);
 }

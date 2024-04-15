@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 12:28:32 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 18:49:25 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 22:30:37 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	main(int argc, char **argv)
 	t_game	info;
 	int screen_width; // put in struct
 	int screen_height;
-
 	atexit(&checkleaks);
 	if (argc != 2)
 		error_handling("Arguments should be: ./so_long map.ber\n", NULL);
 	info.moves = 0;
 	info.collected_coins = 0;
+	info.not_rectangular = 0;
 	run_all_checks(argv, &info);
 	info.mlx = mlx_init(info.width * TILE_SIZE, info.height * TILE_SIZE, "So long and thanks", false);
 	if (!info.mlx)
@@ -40,7 +40,6 @@ int	main(int argc, char **argv)
 	mlx_key_hook(info.mlx, ft_hook, &info);
 	mlx_loop(info.mlx);
 	mlx_terminate(info.mlx);
-	// system("leaks so_long");
 	ft_printf("You reached the end of the main function...");
 	return (EXIT_SUCCESS);
 }

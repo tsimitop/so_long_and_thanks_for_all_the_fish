@@ -6,23 +6,18 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 18:12:05 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 19:56:17 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/15 23:02:27 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	*read_line(char *line_const, int fd)
 {
-	char	*buffer;
+	char	buffer[BUFFER_SIZE + 1];
 	int		chars_read;
 
 	chars_read = 1;
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buffer)
-		return (line_const);
 	while (line_const && (!ft_strchr(line_const, '\n')) && chars_read > 0)
 	{
 		chars_read = read(fd, buffer, BUFFER_SIZE);
@@ -31,7 +26,6 @@ char	*read_line(char *line_const, int fd)
 		buffer[chars_read] = '\0';
 		line_const = ft_strjoin(line_const, buffer);
 	}
-	free(buffer);
 	return (line_const);
 }
 
@@ -86,7 +80,9 @@ char	*get_next_line(int fd)
 {
 	static char	*line_const = NULL;
 	char		*current_line;
+	int			i;
 
+	i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (free(line_const), line_const = NULL, NULL);
 	if (line_const == NULL)
@@ -99,6 +95,8 @@ char	*get_next_line(int fd)
 	if (!line_const)
 		return (NULL);
 	current_line = return_line(line_const);
+	if (!current_line)
+		return (free(line_const), line_const = NULL, NULL);
 	line_const = remaining_line(line_const);
 	return (current_line);
 }
