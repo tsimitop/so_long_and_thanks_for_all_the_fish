@@ -13,8 +13,6 @@ LIBMLX_PATH = ./MLX42
 HEADERS = -I $(LIBMLX_PATH)/include
 LIBS = $(LIBMLX_PATH)/build/libmlx42.a -lglfw
 
-MLX42_URL	= https://github.com/codam-coding-college/MLX42.git
-
 NAME = so_long
 
 ################################################################################
@@ -33,13 +31,7 @@ SRCS =	$(PARSING_PATH)/valid_parse.c \
 
 OBJS = $(SRCS:.c=.o)
 
-all : init-submodules $(LIBFT) $(LIBS) $(NAME)
-
-init-submodules:
-	@if [ -z "$(shell ls -A $(LIBMLX_PATH))" ]; then \
-		git submodule init $(LIBMLX_PATH); \
-		git submodule update $(LIBMLX_PATH); \
-	fi
+all : $(LIBFT) $(LIBS) $(NAME)
 
 $(LIBS) :
 	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build
@@ -72,4 +64,4 @@ $(LIBFT):
 	@make -C $(LIBFT_PATH) --no-print-directory
 
 .PHONY :
-	all clean fclean re libmlx init-submodules
+	all clean fclean re libmlx
