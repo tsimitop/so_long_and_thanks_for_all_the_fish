@@ -2,16 +2,18 @@
 #									CONSTANTS								   #
 ################################################################################
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 # -fsanitize=address
 LIBFT_PATH = ./Libft
 LIBFT = $(LIBFT_PATH)/libft.a
-# LDFLAGS = -L $(LIBFT_PATH) -lft
 LDFLAGS = -L $(LIBFT_PATH) -L $(LIBMLX_PATH)/build -lft -lmlx42 -lglfw -ldl -lm -pthread
 PARSING_PATH = ./parsing
+MOVING_PATH = ./moving
 LIBMLX_PATH = ./MLX42
 HEADERS = -I $(LIBMLX_PATH)/include
 LIBS = $(LIBMLX_PATH)/build/libmlx42.a -lglfw
+
+MLX42_URL	= https://github.com/codam-coding-college/MLX42.git
 
 NAME = so_long
 
@@ -21,15 +23,23 @@ NAME = so_long
 
 SRCS =	$(PARSING_PATH)/valid_parse.c \
 		$(PARSING_PATH)/flood.c \
-		main.c \
-		initialization.c \
-		go_places.c \
+		$(PARSING_PATH)/main_check.c \
+		$(MOVING_PATH)/go_places.c \
+		$(MOVING_PATH)/position_cases.c \
+		$(MOVING_PATH)/final_moves.c \
 		checks.c \
-		position_cases.c
+		main.c \
+		initialization.c
 
 OBJS = $(SRCS:.c=.o)
 
-all : $(LIBFT) $(LIBS) $(NAME)
+all : init-submodules $(LIBFT) $(LIBS) $(NAME)
+
+init-submodules:
+	@if [ -z "$(shell ls -A $(LIBMLX_PATH))" ]; then \
+		git submodule init $(LIBMLX_PATH); \
+		git submodule update $(LIBMLX_PATH); \
+	fi
 
 $(LIBS) :
 	@cmake $(LIBMLX_PATH) -B $(LIBMLX_PATH)/build && make -C $(LIBMLX_PATH)/build
@@ -39,8 +49,6 @@ $(NAME) : $(OBJS) $(LIBS)
 
 $(OBJS) : %.o : %.c
 	@$(CC) -c $(CFLAGS) -I$(LIBFT_PATH) -I include/ $(HEADERS) $< -o $@ && printf "Compiling: $(notdir $<\n)"
-# @$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) -I$(LIBFT_PATH) -I include/ && printf "Compiling: $(notdir $<)"
-# @$(CC) -c $(CFLAGS) -I $(LIBFT_PATH) -I include/ $< -o $@
 
 clean :
 	@echo "Removing $(OBJS)"
@@ -64,4 +72,4 @@ $(LIBFT):
 	@make -C $(LIBFT_PATH) --no-print-directory
 
 .PHONY :
-	all clean fclean re libmlx
+	all clean fclean re libmlx init-submodules

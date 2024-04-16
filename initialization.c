@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 16:27:42 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/14 17:05:45 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:06:56 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,14 @@ void	put_coin_pawn(t_game *info, char c, int i, int j)
 {
 	if (c == 'C')
 	{
-		if (mlx_image_to_window(info->mlx, info->image_coin, i * TILE_SIZE, j * TILE_SIZE) == -1)
+		if (mlx_image_to_window(info->mlx, info->image_coin, \
+		i * TILE_SIZE, j * TILE_SIZE) == -1)
 			error_handling("Image", NULL);
 	}
 	else if (c == 'P')
 	{
-		if (mlx_image_to_window(info->mlx, info->image_pawn, i * TILE_SIZE, j * TILE_SIZE) == -1)
+		if (mlx_image_to_window(info->mlx, info->image_pawn, \
+		i * TILE_SIZE, j * TILE_SIZE) == -1)
 			error_handling("Image", NULL);
 	}
 }
@@ -69,17 +71,20 @@ void	put_wall_floor(t_game *info, char c, int i, int j)
 {
 	if (c == '0' || c == 'C' || c == 'P')
 	{
-		if (mlx_image_to_window(info->mlx, info->image_floor, i * TILE_SIZE, j * TILE_SIZE) == -1)
+		if (mlx_image_to_window(info->mlx, info->image_floor, \
+		i * TILE_SIZE, j * TILE_SIZE) == -1)
 			error_handling("Image", NULL);
 	}
 	else if (c == '1')
 	{
-		if (mlx_image_to_window(info->mlx, info->image_wall, i * TILE_SIZE, j * TILE_SIZE) == -1)
+		if (mlx_image_to_window(info->mlx, info->image_wall, \
+		i * TILE_SIZE, j * TILE_SIZE) == -1)
 			error_handling("Image", NULL);
 	}
 	else if (c == 'E')
 	{
-		if (mlx_image_to_window(info->mlx, info->image_exit, i * TILE_SIZE, j * TILE_SIZE) == -1)
+		if (mlx_image_to_window(info->mlx, info->image_exit, \
+		i * TILE_SIZE, j * TILE_SIZE) == -1)
 			error_handling("Image", NULL);
 	}
 }
@@ -92,7 +97,7 @@ static mlx_image_t	*load_image(char *str, t_game *info)
 	texture = mlx_load_png(str);
 	if (!texture)
 		error_handling("texture", NULL);
-	img = mlx_texture_to_image(info->mlx, texture); //info->image change it
+	img = mlx_texture_to_image(info->mlx, texture);
 	if (!img)
 		error_handling("texture", NULL);
 	mlx_delete_texture(texture);

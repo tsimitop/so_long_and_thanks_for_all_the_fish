@@ -6,7 +6,7 @@
 /*   By: tsimitop <tsimitop@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 15:21:28 by tsimitop          #+#    #+#             */
-/*   Updated: 2024/04/15 22:23:47 by tsimitop         ###   ########.fr       */
+/*   Updated: 2024/04/16 20:28:26 by tsimitop         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,15 @@ void	free_info_error_handling(char *str, int *fd, t_game *info)
 	exit(EXIT_FAILURE);
 }
 
-void	free_init_map_error_handling(char *str, int *fd, t_game *info)
+void	final_free(t_game *info)
+{
+	if (info->split_map)
+		free_split(info->split_map);
+	if (info->initial_map)
+		free(info->initial_map);
+}
+
+void	free_init_map_error_handle(char *str, int *fd, t_game *info)
 {
 	if (fd)
 		close(*fd);
@@ -52,42 +60,14 @@ void	remove_coin_instance(t_game *info)
 	i = 0;
 	while (i <= info->init_coins)
 	{
-		if (info->image_coin->instances[i].y == info->image_pawn->instances[0].y &&\
-		 info->image_coin->instances[i].x == info->image_pawn->instances[0].x)
+		if (info->image_coin->instances[i].y == \
+		info->image_pawn->instances[0].y && \
+		info->image_coin->instances[i].x == info->image_pawn->instances[0].x)
 		{
 			info->image_coin->instances[i].enabled = false;
 			break ;
 		}
 		else
 			i++;
-	}
-}
-
-void	print_buffer(t_game *info)
-{
-	int i;
-
-	i = 0;
-	while (info->initial_map[i] != '\0')
-	{
-		ft_printf("%c", info->initial_map[i]);
-		i++;
-	}
-}
-
-void print_spl_buf(char **spl_buf)
-{
-	int y = 0;
-	int x = 0;
-	while (spl_buf[y])
-	{
-		x = 0;
-		while (spl_buf[y][x])
-		{
-			ft_printf("%c", spl_buf[y][x]);
-			x++;
-		}
-		ft_printf("\n");
-		y++;
 	}
 }
